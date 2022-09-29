@@ -84,7 +84,6 @@ class Predictor(BasePredictor):
         model_path = "/models"
 
         model_info = models_map[model_name]
-        args.sample_size = model_info["sample_size"]
         args.sample_rate = model_info["sample_rate"]
 
         if self.loaded_model_name != model_name:
@@ -103,10 +102,6 @@ class Predictor(BasePredictor):
         
         model_fn = self.loaded_model_fn
 
-
-
-        #@markdown Check the box below to save your generated audio to [Weights & Biases](https://www.wandb.ai/site)
-        save_new_generations_to_wandb = False #@param {type: "boolean"}
 
 
         torch.cuda.empty_cache()
