@@ -36,7 +36,6 @@ from audio_diffusion.utils import PadCrop, Stereo
 
 #@title Args
 
-sample_rate = 48000 
 latent_dim = 0              
 
 
@@ -64,9 +63,9 @@ class Predictor(BasePredictor):
         os.system("ls -l /models")
     def predict(
         self,
-        model_name: str = Input(description="Model", default = "glitch-440k", choices=["glitch-440k",  "jmann-large-580k", "maestro-150k", "unlocked-250k"]),
-        length: str = Input(description="Number of seconds to generate", default="8", choices=["2","4","8","12","16"]),
-        batch_size: int = Input(description="How many samples to generate", default=2),
+        model_name: str = Input(description="Model", default = "maestro-150k", choices=["glitch-440k",  "jmann-large-580k", "maestro-150k", "unlocked-250k"]),
+        length: float = Input(description="Number of seconds to generate", default=8),
+        batch_size: int = Input(description="How many samples to generate", default=1),
         steps: int = Input(description="Number of steps, higher numbers will give more refined output but will take longer. The maximum is 150.", default=100),
     ) -> Path:
         """Run a single prediction on the model"""
@@ -74,10 +73,8 @@ class Predictor(BasePredictor):
         # JSON encode {title: "Pimping your prompt", payload: prompt }
         #report_status(title="Translating", payload=prompt)
 
-        sample_size = sample_rate * int(length)
         args = Object()
-        args.sample_size = sample_size
-        args.sample_rate = sample_rate
+
         args.latent_dim = latent_dim
 
         #@title Create the model
@@ -85,6 +82,9 @@ class Predictor(BasePredictor):
 
         model_info = models_map[model_name]
         args.sample_rate = model_info["sample_rate"]
+        args.sample_size =  int(((args.sample_rate * length) // 8192) * 8192)
+        print("sample_size", args.sample_size)
+
 
         if self.loaded_model_name != model_name:
             download_model(model_name,0,model_path)
