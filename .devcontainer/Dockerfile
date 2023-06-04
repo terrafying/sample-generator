@@ -7,7 +7,7 @@ COPY . /app
 
 WORKDIR /app
 
-RUN pip install git+https://github.com/harmonai-org/sample-generator
+RUN pip install git+https://github.com/terrafying/sample-generator
 
 RUN pip install k-diffusion v-diffusion-pytorch
 

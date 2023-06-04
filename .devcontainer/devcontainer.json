@@ -1,5 +1,8 @@
 {
-	"image": "mcr.microsoft.com/devcontainers/universal:2",
+	"build": { 
+		"context": "..",
+		"dockerfile": "Dockerfile"
+	},
 	"features": {
 		"ghcr.io/devcontainers-contrib/features/yt-dlp:2": {
 			"version": "latest"
@@ -8,15 +11,17 @@
 			"c1": "sudo curl -o /usr/local/bin/cog -L \"https://github.com/replicate/cog/releases/latest/download/cog_$(uname -s)_$(uname -m)\"",
 			"c2": "sudo chmod +x /usr/local/bin/cog"
 		},
-		"ghcr.io/devcontainers/features/nvidia-cuda:1": {
-			"cudaVersion": "11.8",
-			"cudnnVersion": "8.6.0.163"
+		"ghcr.io/devcontainers/features/docker-in-docker:2": {
+			"version": "latest",
+			"enableNonRootDocker": "true",
+			"moby": "true"
 		}
 	},
 	"customizations": {
 		"vscode": {
 			"extensions": [
-				"Codeium.codeium"
+				"Codeium.codeium",
+				"GitHub.copilot"
 			]
 		}
 	}
